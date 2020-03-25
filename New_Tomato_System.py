@@ -13,8 +13,8 @@ def rhs(y, t_zero):
     s_v = y[6]
     i_v = y[7]
 
-    s_j_p_prime = - beta_j_p * s_j_p * i_v + r_1_j * l_j_p + r_2_j * i_j_p+ r_a * i_a_p
-    s_a_p_prime = - beta_a_p * s_a_p * i_v
+    s_j_p_prime = - beta_j_p * s_j_p * i_v + r_1_j * l_j_p + r_2_j * i_j_p+ r_a * i_a_p - alpha * s_j_p
+    s_a_p_prime = - beta_a_p * s_a_p * i_v + alpha * s_j_p
     l_j_p_prime = beta_j_p * s_j_p * i_v - b_j * l_j_p - r_1_j * l_j_p
     l_a_p_prime = beta_a_p * s_a_p * i_v - b_a * l_a_p
     i_j_p_prime = b_j * l_j_p - r_2_j * i_j_p
@@ -36,15 +36,16 @@ beta_a_v = 0.00015
 gamma = 0.06
 theta = 0.2
 mu = 0.3
+alpha = 0.5
 
 y_zero = np.array([0.7, 0.3, 0.0, 0.0, 0.0 , 0.0, 0.92, 0.08])
-t = np.linspace(0, 70, 1000)
+t = np.linspace(0, 120, 1000)
 sol = odeint(rhs, y_zero, t)
-plt.plot(t, sol[:, 4], 'b')#, label='$I_p$')
-plt.plot(t, sol[:, 5], 'g')#, label='$I_p$')
+plt.plot(t, sol[:, 4], 'b', label="$I_j_p$")
+plt.plot(t, sol[:, 5], 'g', label="$I_a_p$")
 #plt.plot([0.6+7, 1.1+13, 1.7+21, 2.4+28,2.8+35,3.4+42], [0.005, 0.007, 0.008, 0.02,.17+0.4,0.031+0.8], 'ro')
 #plt.plot(t, sol[:, 4], 'r', label='$I_v$')
-#plt.legend(loc='best')
+plt.tight_layout()
 plt.xlabel('$t$')
 plt.ylabel('proporción de plantas infectadas')
 plt.ylim(-0.05,1)
